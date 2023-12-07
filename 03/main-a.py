@@ -1,20 +1,22 @@
 import sys
 from dataclasses import dataclass
-from typing import Iterable, List, Optional, Generator
 from functools import reduce
 from itertools import product, starmap
+from typing import Generator, Iterable, List, Optional
 
 Grid = List[str]
 
+
 def parse(lines: Iterable[str]) -> Grid:
     return [l.strip() for l in lines if l.strip()]
+
 
 def resolve(grid: Grid) -> Generator[int, None, None]:
     for y, line in enumerate(grid):
         currentNumber = ""
         isAdjacent = False
         for x, c in enumerate(line):
-            if '0' <= c <= '9':
+            if "0" <= c <= "9":
                 currentNumber += c
                 isAdjacent |= is_adjacent(grid, y, x)
             elif isAdjacent:
@@ -29,6 +31,7 @@ def resolve(grid: Grid) -> Generator[int, None, None]:
             yield int(currentNumber)
             currentNumber = ""
             isAdjacent = False
+
 
 def is_adjacent(grid: Grid, y: int, x: int) -> bool:
     def is_special(ny: int, nx: int) -> bool:
@@ -46,7 +49,9 @@ def is_adjacent(grid: Grid, y: int, x: int) -> bool:
 
         return True
 
-    all_neighbors = list(filter(lambda s: s[0] != 0 or s[1] != 0, product([-1, 0, 1], [-1, 0, 1])))
+    all_neighbors = list(
+        filter(lambda s: s[0] != 0 or s[1] != 0, product([-1, 0, 1], [-1, 0, 1]))
+    )
     return any(starmap(is_special, all_neighbors))
 
 
@@ -55,4 +60,3 @@ if __name__ == "__main__":
     result = sum(resolve(grid))
 
     print(result)
-
