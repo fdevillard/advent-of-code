@@ -1,0 +1,23 @@
+# See https://pre-commit.com for more information
+# See https://pre-commit.com/hooks.html for more hooks
+# Quick start: `brew install pre-commit && pre-commit install`
+repos:
+- repo: https://github.com/pre-commit/pre-commit-hooks
+  rev: v4.5.0
+  hooks:
+  - id: trailing-whitespace
+  - id: check-case-conflict
+  - id: check-merge-conflict
+  - id: check-symlinks
+  - id: requirements-txt-fixer
+- repo: https://github.com/pycqa/isort
+  rev: 5.12.0
+  hooks:
+  - id: isort
+    name: isort (python)
+- repo: https://github.com/psf/black
+  rev: 23.11.0
+  hooks:
+  - id: black-jupyter
+    # https://pre-commit.com/#top_level-default_language_version
+    language_version: python3.12
