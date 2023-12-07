@@ -1,13 +1,15 @@
 from __future__ import annotations
+
 import sys
 from dataclasses import dataclass
-from typing import Iterable, List, Optional, Dict
 from functools import reduce, total_ordering
-from itertools import starmap, count
+from itertools import count, starmap
+from typing import Dict, Iterable, List, Optional
+
 
 @total_ordering
 class Card:
-    possible = ['A', 'K', 'Q', 'J', 'T', '9', '8', '7', '6', '5', '4', '3', '2']
+    possible = ["A", "K", "Q", "J", "T", "9", "8", "7", "6", "5", "4", "3", "2"]
     value: str
 
     def __init__(self, value):
@@ -36,6 +38,7 @@ class Card:
 
     def __repr__(self) -> str:
         return self.value
+
 
 @total_ordering
 @dataclass
@@ -110,6 +113,7 @@ class Bid:
 
 Game = List[Bid]
 
+
 def parse(lines: Iterable[str]) -> Game:
     result: Game = []
 
@@ -123,11 +127,16 @@ def parse(lines: Iterable[str]) -> Game:
 
     return result
 
+
 def solve(game: Game) -> int:
-    return sum(starmap(lambda a,b: a*b, zip(map(lambda h: h.bidValue, sorted(game)), count(1))))
+    return sum(
+        starmap(
+            lambda a, b: a * b, zip(map(lambda h: h.bidValue, sorted(game)), count(1))
+        )
+    )
+
 
 if __name__ == "__main__":
-
     # Tests of the poor
 
     # Card
@@ -142,10 +151,7 @@ if __name__ == "__main__":
 
     # Bid
     dummy = Bid(hand=[Card("K"), Card("K"), Card("Q")], bidValue=10)
-    expectedGrouped = {
-        Card("K"): 2,
-        Card("Q"): 1
-    }
+    expectedGrouped = {Card("K"): 2, Card("Q"): 1}
     assert dummy.grouped() == expectedGrouped, "failed to compute the group properly"
 
     all_suits = parse(
@@ -162,9 +168,20 @@ if __name__ == "__main__":
         """.splitlines()
     )
     sorted_suits = sorted(all_suits, reverse=True)
-    sorted_as_string = list(map(lambda suit: "".join(map(str, suit.hand)), sorted_suits))
-    assert sorted_as_string == ["AAAAA", "A2AAA", "33322", "98JJJ", "98TTT", "98222", "2QQAA", "AA234", "23456"]
-
+    sorted_as_string = list(
+        map(lambda suit: "".join(map(str, suit.hand)), sorted_suits)
+    )
+    assert sorted_as_string == [
+        "AAAAA",
+        "A2AAA",
+        "33322",
+        "98JJJ",
+        "98TTT",
+        "98222",
+        "2QQAA",
+        "AA234",
+        "23456",
+    ]
 
     # End tests of the poor
 
@@ -172,4 +189,3 @@ if __name__ == "__main__":
     result = solve(game)
 
     print(result)
-

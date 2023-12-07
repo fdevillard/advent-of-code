@@ -1,8 +1,9 @@
 import sys
 from dataclasses import dataclass
-from typing import Iterable, List, Optional, Generator
 from functools import reduce
 from itertools import product, starmap
+from typing import Generator, Iterable, List, Optional
+
 
 class Cell:
     # We explicitly want referential equality.
@@ -13,15 +14,19 @@ class Cell:
         # well, it's a trivial hash, but it's an hash :]
         return 0
 
+
 class NumericCell(Cell):
     def __init__(self, value: int):
         self.value = value
+
 
 class SymbolCell(Cell):
     def __init__(self, symbol: str):
         self.symbol = symbol
 
+
 Grid = List[List[Cell]]
+
 
 def parse(lines: Iterable[str]) -> Grid:
     rawGrid = [l.strip() for l in lines if l.strip()]
@@ -32,7 +37,7 @@ def parse(lines: Iterable[str]) -> Grid:
         currentNumericCell: Optional[NumericCell] = None
 
         for c in line:
-            if '0' <= c <= '9':
+            if "0" <= c <= "9":
                 # If we're hitting a new number, then we create a new instance of the numeric cell
                 if currentNumericCell is None:
                     currentNumericCell = NumericCell(int(c))
@@ -72,8 +77,14 @@ def gear_ratio(grid: Grid, y: int, x: int) -> int:
 
         return None
 
-    all_neighbors_offsets = list(filter(lambda s: s[0] != 0 or s[1] != 0, product([-1, 0, 1], [-1, 0, 1])))
-    all_neighbors_numeric_cells = {cell for cell in starmap(get_numeric_cell, all_neighbors_offsets) if cell is not None}
+    all_neighbors_offsets = list(
+        filter(lambda s: s[0] != 0 or s[1] != 0, product([-1, 0, 1], [-1, 0, 1]))
+    )
+    all_neighbors_numeric_cells = {
+        cell
+        for cell in starmap(get_numeric_cell, all_neighbors_offsets)
+        if cell is not None
+    }
 
     if len(all_neighbors_numeric_cells) != 2:
         return 0
@@ -86,4 +97,3 @@ if __name__ == "__main__":
     result = sum(resolve(grid))
 
     print(result)
-

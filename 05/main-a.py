@@ -1,10 +1,11 @@
-from typing import List, Dict, Tuple, Iterable, Optional, Callable
-from functools import partial, reduce
-import sys
 import json
+import sys
+from functools import partial, reduce
+from typing import Callable, Dict, Iterable, List, Optional, Tuple
 
 Seeds = List[int]
 Mapping = List[List[int]]
+
 
 def parseInput(lines: Iterable[str]) -> (Seeds, List[Mapping]):
     # process the seeds line
@@ -32,6 +33,7 @@ def parseInput(lines: Iterable[str]) -> (Seeds, List[Mapping]):
 
     return seeds, mappings
 
+
 def applyMapping(seed: int, mapping: Mapping) -> int:
     for rule in mapping:
         dest, source, l = rule[0], rule[1], rule[2]
@@ -47,11 +49,10 @@ def computeLocation(seed: int, mappings: List[Mapping]) -> int:
 
     return seed
 
-if __name__ == "__main__":
 
+if __name__ == "__main__":
     seeds, mappings = parseInput(sys.stdin)
 
     results = list(computeLocation(s, mappings) for s in seeds)
 
     print(min(results))
-

@@ -1,5 +1,6 @@
 import sys
 
+
 def sum_calibration_values(lines):
     total_sum = 0
 
@@ -13,6 +14,7 @@ def sum_calibration_values(lines):
         total_sum += calibration_value
 
     return total_sum
+
 
 if __name__ == "__main__":
     print(sum_calibration_values(sys.stdin))

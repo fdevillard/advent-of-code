@@ -1,11 +1,12 @@
-from typing import List, Dict, Tuple, Iterable, Optional, Callable, Sequence
-from functools import partial, reduce
-import sys
 import json
+import sys
+from functools import partial, reduce
 from multiprocessing import Pool
+from typing import Callable, Dict, Iterable, List, Optional, Sequence, Tuple
 
 Seeds = List[int]
 Mapping = List[List[int]]
+
 
 def parseInput(lines: Iterable[str]) -> (Seeds, List[Mapping]):
     # process the seeds line
@@ -35,12 +36,14 @@ def parseInput(lines: Iterable[str]) -> (Seeds, List[Mapping]):
 
     return seeds, mappings
 
+
 def expandSeeds(seeds: List[int]) -> Iterable[Sequence[int]]:
     if len(seeds) % 2 != 0:
         raise ValueError("must be pairs")
 
     for idx in range(0, len(seeds), 2):
-        yield seeds[idx], seeds[idx+1]
+        yield seeds[idx], seeds[idx + 1]
+
 
 def applyMapping(seed: int, mapping: Mapping) -> int:
     for rule in mapping:
@@ -57,19 +60,23 @@ def computeLocation(seed: int, mappings: List[Mapping]) -> int:
 
     return seed
 
+
 def computeLocationOnSlice(seeds: List[int], mappings: List[Mapping]) -> int:
     if len(seeds) != 2:
         raise ValueError("not a range")
 
-    return min((computeLocation(s, mappings) for s in range(seeds[0], seeds[0] + seeds[1], 1)))
+    return min(
+        (computeLocation(s, mappings) for s in range(seeds[0], seeds[0] + seeds[1], 1))
+    )
+
 
 if __name__ == "__main__":
-
     seeds, mappings = parseInput(sys.stdin)
 
     with Pool() as p:
         expanded = expandSeeds(seeds)
-        result = min(p.map(partial(computeLocationOnSlice, mappings=mappings),  expanded))
+        result = min(
+            p.map(partial(computeLocationOnSlice, mappings=mappings), expanded)
+        )
 
     print(result)
-

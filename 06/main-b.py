@@ -1,13 +1,15 @@
-import sys
 import re
+import sys
 from dataclasses import dataclass
-from typing import Iterable, List, Optional
 from functools import reduce
+from typing import Iterable, List, Optional
+
 
 @dataclass
 class Race:
     time: int
     distance: int
+
 
 def parseRaces(lines: Iterable[str]) -> List[Race]:
     time: Optional[int] = None
@@ -20,7 +22,7 @@ def parseRaces(lines: Iterable[str]) -> List[Race]:
 
         split = l.split(":")
         key = split[0].strip().lower()
-        elem = int(''.join(re.findall(r'\d+', split[1])))
+        elem = int("".join(re.findall(r"\d+", split[1])))
 
         if key == "time":
             time = elem
@@ -37,6 +39,7 @@ def parseRaces(lines: Iterable[str]) -> List[Race]:
 
     return [Race(time=time, distance=distance)]
 
+
 def countBetterRuns(race: Race) -> int:
     betterRuns = 0
 
@@ -49,11 +52,10 @@ def countBetterRuns(race: Race) -> int:
 
     return betterRuns
 
-if __name__ == "__main__":
 
+if __name__ == "__main__":
     races = parseRaces(sys.stdin)
     allCountBetterRuns = map(countBetterRuns, races)
-    result = reduce(lambda a, b: a*b, allCountBetterRuns)
+    result = reduce(lambda a, b: a * b, allCountBetterRuns)
 
     print(result)
-

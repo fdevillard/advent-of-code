@@ -1,12 +1,14 @@
 import sys
 from dataclasses import dataclass
-from typing import Iterable, List, Optional
 from functools import reduce
+from typing import Iterable, List, Optional
+
 
 @dataclass
 class Race:
     time: int
     distance: int
+
 
 def parseRaces(lines: Iterable[str]) -> List[Race]:
     times: Optional[List[int]] = None
@@ -19,12 +21,7 @@ def parseRaces(lines: Iterable[str]) -> List[Race]:
 
         split = l.split(":")
         key = split[0].strip().lower()
-        elems = [
-            int(elem.strip())
-            for elem
-            in split[1].split()
-            if elem.strip()
-        ]
+        elems = [int(elem.strip()) for elem in split[1].split() if elem.strip()]
 
         if key == "time":
             times = elems
@@ -39,7 +36,10 @@ def parseRaces(lines: Iterable[str]) -> List[Race]:
     if distances is None:
         raise ValueError("unknown distances")
 
-    return list(map(lambda tpl: Race(time=tpl[0], distance=tpl[1]), zip(times, distances)))
+    return list(
+        map(lambda tpl: Race(time=tpl[0], distance=tpl[1]), zip(times, distances))
+    )
+
 
 def countBetterRuns(race: Race) -> int:
     betterRuns = 0
@@ -53,11 +53,10 @@ def countBetterRuns(race: Race) -> int:
 
     return betterRuns
 
-if __name__ == "__main__":
 
+if __name__ == "__main__":
     races = parseRaces(sys.stdin)
     allCountBetterRuns = map(countBetterRuns, races)
-    result = reduce(lambda a, b: a*b, allCountBetterRuns)
+    result = reduce(lambda a, b: a * b, allCountBetterRuns)
 
     print(result)
-
