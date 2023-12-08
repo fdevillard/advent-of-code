@@ -3,6 +3,7 @@ from __future__ import annotations
 import re
 import sys
 from dataclasses import dataclass
+from math import lcm
 from typing import Dict, Iterable, List
 
 
@@ -49,22 +50,28 @@ def parse(lines: Iterable[str]) -> Game:
 
 
 def solve(game: Game) -> int:
-    n_hops = 0
-    here = [n for n in game.nodes.values() if n.value[-1] == "A"]
-    print("starting nodes:", [n.value for n in here])
+    # Solving for the whole array at once takes too long. So let use the least-common-multiple of
+    # each independent results.
+    def solve_one(startNode: str) -> int:
+        n_hops = 0
+        here = game.nodes[startNode]
 
-    if not here:
-        raise ValueError("empty 'here' array")
+        while here.value[-1] != "Z":
+            match game.instructions[n_hops % len(game.instructions)]:
+                case "L":
+                    here = game.nodes[here.left]
+                case "R":
+                    here = game.nodes[here.right]
+                case e:
+                    raise ValueError(f"unknown instruction: {e}")
+            n_hops += 1
 
-    while any(map(lambda n: n.value[-1] != "Z", here)):
-        is_left = game.instructions[n_hops % len(game.instructions)] == "L"
-        here = list(map(lambda n: game.nodes[n.left if is_left else n.right], here))
+        return n_hops
 
-        n_hops += 1
+    starts = [k for k in game.nodes.keys() if k[-1] == "A"]
+    solve_all = list(map(solve_one, starts))
 
-    print("ending nodes:", [n.value for n in here])
-
-    return n_hops
+    return lcm(*solve_all)
 
 
 if __name__ == "__main__":
