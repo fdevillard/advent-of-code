@@ -13,12 +13,7 @@ def parse(lines: Iterable[str]) -> Game:
 
 
 def solve(game: Game) -> int:
-    results = []
-    for i, g in enumerate(game, start=1):
-        resolved = solve_single(g)
-        results.append(resolved)
-
-    return sum(results)
+    return sum(map(solve_single, game))
 
 
 def solve_single(sensor_samples: List[int]) -> int:
