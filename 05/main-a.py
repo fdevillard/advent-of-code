@@ -1,7 +1,5 @@
-import json
 import sys
-from functools import partial, reduce
-from typing import Callable, Dict, Iterable, List, Optional, Tuple
+from typing import Iterable, List
 
 Seeds = List[int]
 Mapping = List[List[int]]
