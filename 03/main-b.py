@@ -1,5 +1,4 @@
 import sys
-from dataclasses import dataclass
 from functools import reduce
 from itertools import product, starmap
 from typing import Generator, Iterable, List, Optional

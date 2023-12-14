@@ -1,8 +1,7 @@
-import json
 import sys
-from functools import partial, reduce
+from functools import partial
 from multiprocessing import Pool
-from typing import Callable, Dict, Iterable, List, Optional, Sequence, Tuple
+from typing import Iterable, List, Sequence
 
 Seeds = List[int]
 Mapping = List[List[int]]

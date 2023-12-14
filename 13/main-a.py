@@ -3,7 +3,7 @@ from __future__ import annotations
 import sys
 from dataclasses import dataclass
 from itertools import pairwise
-from typing import Iterable, Iterator, List, Optional, cast
+from typing import Iterable, Iterator, List, Optional
 
 Pattern = List[str]
 

@@ -2,9 +2,9 @@ from __future__ import annotations
 
 import sys
 from dataclasses import dataclass
-from functools import reduce, total_ordering
+from functools import total_ordering
 from itertools import count, starmap
-from typing import Dict, Iterable, List, Optional
+from typing import Dict, Iterable, List
 
 
 @total_ordering
